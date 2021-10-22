@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        depends_on:
+            - postgres
+        volumes:
+            - ./:/var/www/coingecko-url:cached
+        working_dir: /var/www/coingecko-url
+        ports:
+            - "8080:3000"
+        command:
+            [
+                "sh",
+                "-c",
+                "bundle config set --local path 'vendor/bundle' && bundle exec puma -C config/puma.rb",
+            ]
+    web_bundler:
+        image: alpine/bundle:3.0.2
+        depends_on:
+            - postgres
+        volumes:
+            - ./:/var/www/coingecko-url:cached
+        working_dir: /var/www/coingecko-url
+        command:
+            [
+                "sh",
+                "-c",
+                "bundle config set --local path 'vendor/bundle' && (bundle check || bundle install) && ((bundle exec rake db:migrate 2>/dev/null) || (bundle exec rake db:create db:structure:load db:migrate db:seed))",
+            ]
+        restart: "no"
+    web_yarn:
+        image: node:17-alpine3.14
+        volumes:
+            - ./:/var/www/coingecko-url:cached
+        working_dir: /var/www/coingecko-url
+        command: ["sh", "-c", "yarn install"]
+        restart: "no"
+    postgres:
+        image: postgres:13
+        ports:
+            - "15432:5432"
+        environment:
+            POSTGRES_HOST_AUTH_METHOD: trust
