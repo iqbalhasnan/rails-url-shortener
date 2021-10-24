@@ -27,9 +27,10 @@ if docker-compose ps "${tasks_group[@]}" | grep -v 'Exit 0' | grep 'Exit'; then
 fi
 
 # Bring up web services
+docker-compose up -d webpack
 docker-compose up -d web
 
 # Show status
-docker-compose ps "${tasks_group[@]}" web postgres
+docker-compose ps webpack web postgres
 
 echo "Done."

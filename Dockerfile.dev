@@ -1,3 +1,16 @@
-FROM ruby:3.0.2-slim-buster
+FROM ruby:3.0.2-alpine
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+ENV ROOT=/var/www/coingecko \
+    BUNDLE_PATH=/var/www/coingecko/vendor/bundle
+ENV BUNDLE_BIN=$BUNDLE_PATH/bin
+ENV PATH $ROOT/bin:$BUNDLE_BIN:$PATH
+
+RUN apk update && apk upgrade && apk add --update --no-cache \
+  build-base \
+  curl-dev \
+  nodejs \
+  postgresql-dev \
+  tzdata \
+  yarn && rm -rf /var/cache/apk/*
+
+WORKDIR /var/www/coingecko

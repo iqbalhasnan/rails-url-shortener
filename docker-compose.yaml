@@ -7,37 +7,42 @@ services:
         depends_on:
             - postgres
         volumes:
-            - ./:/var/www/coingecko-url:cached
-        working_dir: /var/www/coingecko-url
+            - ./:/var/www/coingecko:cached
         ports:
             - "8080:3000"
-        command:
-            [
-                "sh",
-                "-c",
-                "bundle config set --local path 'vendor/bundle' && bundle exec puma -C config/puma.rb",
-            ]
+        command: ["sh", "-c", "bundle exec puma -C config/puma.rb"]
     web_bundler:
-        image: alpine/bundle:3.0.2
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
         depends_on:
             - postgres
         volumes:
-            - ./:/var/www/coingecko-url:cached
-        working_dir: /var/www/coingecko-url
+            - ./:/var/www/coingecko:cached
         command:
             [
                 "sh",
                 "-c",
-                "bundle config set --local path 'vendor/bundle' && (bundle check || bundle install) && ((bundle exec rake db:migrate 2>/dev/null) || (bundle exec rake db:create db:structure:load db:migrate db:seed))",
+                "(bundle check || bundle install) && ((bundle exec rake db:migrate 2>/dev/null) || (bundle exec rake db:create db:structure:load db:migrate db:seed))",
             ]
         restart: "no"
     web_yarn:
-        image: node:17-alpine3.14
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
         volumes:
-            - ./:/var/www/coingecko-url:cached
-        working_dir: /var/www/coingecko-url
-        command: ["sh", "-c", "yarn install"]
+            - ./:/var/www/coingecko:cached
+        command: ["sh", "-c", "yarn install --frozen-lockfile"]
         restart: "no"
+    webpack:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        depends_on:
+            - web
+        volumes:
+            - ./:/var/www/coingecko:cached
+        command: ./bin/webpack-dev-server
     postgres:
         image: postgres:13
         ports:
