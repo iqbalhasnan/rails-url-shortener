@@ -43,9 +43,13 @@ services:
         volumes:
             - ./:/var/www/coingecko:cached
         command: ./bin/webpack-dev-server
+        ports:
+            - "3035:3035"
     postgres:
         image: postgres:13
         ports:
             - "15432:5432"
         environment:
             POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./data/db:/var/lib/postgresql/data
