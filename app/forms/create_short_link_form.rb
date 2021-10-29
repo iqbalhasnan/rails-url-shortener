@@ -1,4 +1,4 @@
-class CreateShortenLinkForm
+class CreateShortLinkForm
   include ActiveModel::Model
 
   attr_accessor :url

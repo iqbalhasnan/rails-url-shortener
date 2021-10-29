@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   def create
-    link = CreateShortenLinkForm.new(link_params)
+    link = CreateShortLinkForm.new(link_params)
     short_link = link.save(link_params[:url])
 
     respond_to do |format|
