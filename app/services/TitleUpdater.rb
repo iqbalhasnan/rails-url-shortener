@@ -7,16 +7,16 @@ class TitleUpdater
     new(slug).update_title
   end
 
-  private
-
   def update_title
-    unless title_empty?
+    return unless title_empty?
 
     short_link.link.update(title: url_title)
   end
 
+  private
+
   def short_link
-    @short_link ||= ShortLink.find_by(slug: slug)
+    @short_link ||= ShortLink.eager_load(:link).find_by(slug: slug)
   end
 
   def url_title

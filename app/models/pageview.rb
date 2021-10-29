@@ -1,3 +1,3 @@
 class Pageview < ApplicationRecord
-  belongs_to :short_link
+  belongs_to :short_link, inverse_of: :pageviews
 end
