@@ -21,6 +21,6 @@ class CreateShortLinkForm
   end
 
   def create_short_link
-    link.short_links.create(slug: SecureRandom.alphanumeric(15))
+    link.short_links.create(slug: SecureRandom.alphanumeric(14))
   end
 end
