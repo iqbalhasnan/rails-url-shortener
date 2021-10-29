@@ -8,7 +8,9 @@ class CreateShortenLinkForm
   def save(params = {})
     return false unless valid?
 
-    link.short_links.create(slug: SecureRandom.alphanumeric(15))
+    short_link = link.short_links.create(slug: SecureRandom.alphanumeric(15))
+
+    ShortLinkPresenter.new(short_link)
   end
 
   private

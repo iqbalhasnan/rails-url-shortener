@@ -1,9 +1,13 @@
-<li class="py-4 flex items-center justify-between space-x-3" id="<%= short_link.slug %> ">
+<li class="bg-gray-50	py-4 flex items-center justify-between space-x-3" id="<%= short_link.slug %> ">
   <div class="min-w-0 flex-1 flex items-center space-x-3">
     <div class="min-w-0 flex-1">
       <p class="text-sm mb-3 font-medium text-gray-900 truncate">http://localhost:8080/<%= short_link.slug %></p>
-      <p class="text-sm font-medium text-gray-500 truncate title"><%= short_link.title %></p>
-      <a href="<%= short_link.url %>" class="text-sm font-medium text-gray-500 truncate original-link">Original Link</a> 
+      <div class="animate-pulse flex-1 space-y-4 py-1">
+        <div class="h-4 bg-gray-200 rounded w-3/5"></div>
+      </div>
+      <div class="animate-pulse flex-1 space-y-4 py-1">
+        <div class="h-4 bg-gray-200 rounded w-3/5"></div>
+      </div>
     </div>
   </div>
   <div class="flex-shrink-0">
