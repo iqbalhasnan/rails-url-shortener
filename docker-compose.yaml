@@ -53,3 +53,16 @@ services:
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./data/db:/var/lib/postgresql/data
+    geolite:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./:/var/www/coingecko:cached
+        command:
+            [
+                "sh",
+                "-c",
+                "[ -f ./geolite/GeoLite2-City.mmdb ] || wget https://github.com/DocSpring/geolite2-city-mirror/raw/master/GeoLite2-City.tar.gz -O - | tar xz --strip-components=1 -C ./geolite",
+            ]
+        restart: "no"
