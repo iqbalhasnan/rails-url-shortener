@@ -8,7 +8,7 @@
 set -xeuo pipefail
 
 # docker-compose service groups
-tasks_group=(web_yarn web_bundler)
+tasks_group=(web_yarn web_bundler geolite)
 
 # Destroy everything
 docker-compose stop
