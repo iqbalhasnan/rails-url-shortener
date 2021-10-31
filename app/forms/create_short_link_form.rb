@@ -3,7 +3,7 @@ class CreateShortLinkForm
 
   attr_accessor :url, :short_link
 
-  validates :url, presence: true
+  validates :url, url: true
 
   def save
     return false unless valid?

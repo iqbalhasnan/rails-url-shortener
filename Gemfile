@@ -27,6 +27,8 @@ gem 'maxmind-geoip2', '~> 1.0.0'
 
 gem 'pagy', '~> 5.1'
 
+gem 'validate_url'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

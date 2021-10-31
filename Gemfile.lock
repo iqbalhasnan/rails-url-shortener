@@ -249,6 +249,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
+    validate_url (1.0.13)
+      activemodel (>= 3.0.0)
+      public_suffix
     vcr (6.0.0)
     web-console (4.1.0)
       actionview (>= 6.0.0)
@@ -301,6 +304,7 @@ DEPENDENCIES
   spring
   turbolinks (~> 5)
   tzinfo-data
+  validate_url
   vcr
   web-console (>= 4.1.0)
   webdrivers
