@@ -11,6 +11,8 @@ class PageviewUpdater
   end
 
   def create_pageview
+    return unless short_link.present?
+
     short_link.pageviews.create(
       remote_ip: remote_ip, 
       geolocation: [city_name, country_name].join(",")
