@@ -19,4 +19,7 @@
         <%= render partial: "links/short_link", collection: @short_links %>
       </ul>
   </div>
+  <div class="mt-10">
+    <%== pagy_nav(@page) if @short_links.present? %>
+  </div>
 </div>

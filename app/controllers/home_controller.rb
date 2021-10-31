@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    @short_links = ShortLink.all
+    @page, @short_links = pagy(ShortLink.all, items: 10)
   end
 end
