@@ -1,11 +1,10 @@
 class LinksController < ApplicationController
   def create
-    link = CreateShortLinkForm.new(link_params)
-    short_link = link.save(link_params[:url])
+    form = CreateShortLinkForm.new(link_params)
 
     respond_to do |format|
-      if short_link
-        format.js { render action: :create, locals: { short_link: short_link } }
+      if form.save
+        format.js { render action: :create, locals: { short_link: form.short_link } }
       else
         format.js { render action: :error }
       end

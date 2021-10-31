@@ -1,1 +1,2 @@
 document.getElementById("shorten-links").innerHTML = "<%= escape_javascript(render partial: 'links/short_link', locals: { short_link: short_link }).html_safe %>" + document.getElementById("shorten-links").innerHTML;
+document.getElementById("url").value = ""
