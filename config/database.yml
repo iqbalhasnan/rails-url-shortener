@@ -28,7 +28,4 @@ test:
 
 production:
     <<: *default
-    host:
-    database: coingecko_production
-    username: postgres
-    password: <%= ENV['MARK_DATABASE_PASSWORD'] %>
+    url: <%= ENV['DATABASE_URL'] %>

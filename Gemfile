@@ -31,6 +31,9 @@ gem 'validate_url'
 
 gem 'inline_svg'
 
+# Use Redis adapter to run Action Cable in production
+gem 'redis', '~> 4.0'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
