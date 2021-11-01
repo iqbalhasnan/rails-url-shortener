@@ -57,4 +57,6 @@ COPY --from=builder /var/www/coingecko/vendor/bundle /var/www/coingecko/vendor/b
 
 COPY --from=builder /var/www/coingecko /var/www/coingecko
 
+RUN [ -f ./geolite/GeoLite2-City.mmdb ] || wget https://github.com/DocSpring/geolite2-city-mirror/raw/master/GeoLite2-City.tar.gz -O - | tar xz --strip-components=1 -C ./geolite
+
 CMD ["sh", "-c", "bundle exec puma -C config/puma.rb"]
