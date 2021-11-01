@@ -1,9 +1,7 @@
 version: "3.8"
 services:
     web:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
+        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
         depends_on:
             - postgres
         volumes:
@@ -12,9 +10,7 @@ services:
             - "8080:3000"
         command: ["sh", "-c", "bundle exec puma -C config/puma.rb"]
     web_bundler:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
+        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
         depends_on:
             - postgres
         volumes:
@@ -27,17 +23,13 @@ services:
             ]
         restart: "no"
     web_yarn:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
+        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
         volumes:
             - ./:/var/www/coingecko:cached
         command: ["sh", "-c", "yarn install --frozen-lockfile"]
         restart: "no"
     webpack:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
+        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
         depends_on:
             - web
         volumes:
@@ -54,9 +46,7 @@ services:
         volumes:
             - ./data/db:/var/lib/postgresql/data
     geolite:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
+        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
         volumes:
             - ./:/var/www/coingecko:cached
         command:
