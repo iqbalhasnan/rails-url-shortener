@@ -59,8 +59,11 @@ services:
     rspec:
         depends_on:
             - postgres
+            - geolite
         image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        environment:
+            RAILS_ENV: test
         volumes:
             - ./:/var/www/coingecko:cached
-        command: ["sh", "-c", "rspec"]
+        command: ["sh", "-c", "bundle exec rake db:create && rspec"]
         restart: "no"

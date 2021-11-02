@@ -42,6 +42,7 @@ WORKDIR /var/www/coingecko
 ENV RAILS_ENV production
 ENV NODE_ENV production
 ENV RAILS_SERVE_STATIC_FILES true
+ENV BUNDLE_WITHOUT development:test
 ENV BUNDLE_PATH=/var/www/coingecko/vendor/bundle
 ENV BUNDLE_BIN=$BUNDLE_PATH/bin
 ENV PATH $ROOT/bin:$BUNDLE_BIN:$PATH

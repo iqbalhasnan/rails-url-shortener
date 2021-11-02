@@ -1,0 +1,74 @@
+stages:
+    - test
+    - build
+    - deploy
+
+rspec:
+    interruptible: true
+    image: ruby:3.0.2-alpine
+    services:
+        - name: timescale/timescaledb:latest-pg12
+          alias: postgres
+    variables:
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_DRIVER: overlay2
+        POSTGRES_HOST_AUTH_METHOD: trust
+        RAILS_ENV: test
+    stage: test
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    before_script:
+        - apk update && apk upgrade && apk add --update --no-cache build-base postgresql-dev tzdata
+        - bundle install
+        - rails db:setup
+        - wget https://github.com/DocSpring/geolite2-city-mirror/raw/master/GeoLite2-City.tar.gz -O - | tar xz --strip-components=1 -C ./geolite
+    script:
+        - bundle exec rspec
+build_image:
+    interruptible: true
+    image:
+        name: docker:latest
+    services:
+        - docker:dind
+    variables:
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_DRIVER: overlay2
+    stage: build
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+    script:
+        - echo "$RAILS_MASTER_KEY" > config/master.key
+        - docker login -u _ -p $HEROKU_API_KEY registry.heroku.com
+        - docker build -t registry.heroku.com/$HEROKU_APP/web:$CI_COMMIT_SHA .
+        - docker push registry.heroku.com/$HEROKU_APP/web:$CI_COMMIT_SHA
+deploy_to_heroku:
+    interruptible: true
+    image:
+        name: docker:latest
+    services:
+        - docker:dind
+    variables:
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_DRIVER: overlay2
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+    script:
+        - apk add --no-cache curl
+        - docker login -u _ -p $HEROKU_API_KEY registry.heroku.com
+        - docker pull registry.heroku.com/$HEROKU_APP/web:$CI_COMMIT_SHA
+        - IMAGE_ID=`docker inspect registry.heroku.com/$HEROKU_APP/web:$CI_COMMIT_SHA --format='{{.Id}}'`
+        - echo $IMAGE_ID
+        - |
+            curl --netrc -X PATCH https://api.heroku.com/apps/$HEROKU_APP/formation \
+            -d '{
+                "updates": [
+                    {
+                        "type": "web",
+                        "docker_image": "'$IMAGE_ID'"
+                    }
+                ]
+            }' \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
+            -H "Authorization: Bearer ${HEROKU_API_KEY}"
