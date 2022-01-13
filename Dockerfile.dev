@@ -1,7 +1,7 @@
 FROM ruby:3.0.2-alpine
 
-ENV ROOT=/var/www/coingecko \
-    BUNDLE_PATH=/var/www/coingecko/vendor/bundle
+ENV ROOT=/var/www/app \
+    BUNDLE_PATH=/var/www/app/vendor/bundle
 ENV BUNDLE_BIN=$BUNDLE_PATH/bin
 ENV PATH $ROOT/bin:$BUNDLE_BIN:$PATH
 
@@ -13,4 +13,4 @@ RUN apk update && apk upgrade && apk add --update --no-cache \
   tzdata \
   yarn && rm -rf /var/cache/apk/*
 
-WORKDIR /var/www/coingecko
+WORKDIR /var/www/app

@@ -1,20 +1,20 @@
 version: "3.8"
 services:
     web:
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         depends_on:
             - postgres
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         ports:
             - "8080:3000"
         command: ["sh", "-c", "bundle exec puma -C config/puma.rb"]
     web_bundler:
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         depends_on:
             - postgres
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         command:
             [
                 "sh",
@@ -23,17 +23,17 @@ services:
             ]
         restart: "no"
     web_yarn:
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         command: ["sh", "-c", "yarn install --frozen-lockfile"]
         restart: "no"
     webpack:
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         depends_on:
             - web
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         command: ./bin/webpack-dev-server
         ports:
             - "3035:3035"
@@ -46,9 +46,9 @@ services:
         volumes:
             - ./data/db:/var/lib/postgresql/data
     geolite:
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         command:
             [
                 "sh",
@@ -60,10 +60,10 @@ services:
         depends_on:
             - postgres
             - geolite
-        image: iqbalhasnan/cg-rails-6-dev:20211101_123150Z
+        image: iqbalhasnan/rails-6-dev:latest
         environment:
             RAILS_ENV: test
         volumes:
-            - ./:/var/www/coingecko:cached
+            - ./:/var/www/app:cached
         command: ["sh", "-c", "bundle exec rake db:create && rspec"]
         restart: "no"

@@ -1,7 +1,7 @@
 FROM ruby:3.0.2-alpine AS builder
 
-ENV ROOT=/var/www/coingecko \
-    BUNDLE_PATH=/var/www/coingecko/vendor/bundle
+ENV ROOT=/var/www/app \
+    BUNDLE_PATH=/var/www/app/vendor/bundle
 ENV BUNDLE_BIN=$BUNDLE_PATH/bin
 ENV PATH $ROOT/bin:$BUNDLE_BIN:$PATH
 
@@ -36,14 +36,14 @@ RUN rails assets:precompile --trace && \
 
 FROM ruby:3.0.2-alpine
 
-RUN mkdir -p /var/www/coingecko
-WORKDIR /var/www/coingecko
+RUN mkdir -p /var/www/app
+WORKDIR /var/www/app
 
 ENV RAILS_ENV production
 ENV NODE_ENV production
 ENV RAILS_SERVE_STATIC_FILES true
 ENV BUNDLE_WITHOUT development:test
-ENV BUNDLE_PATH=/var/www/coingecko/vendor/bundle
+ENV BUNDLE_PATH=/var/www/app/vendor/bundle
 ENV BUNDLE_BIN=$BUNDLE_PATH/bin
 ENV PATH $ROOT/bin:$BUNDLE_BIN:$PATH
 
@@ -54,9 +54,9 @@ COPY --from=builder /usr/lib /usr/lib
 COPY --from=builder /usr/share/zoneinfo/ /usr/share/zoneinfo/
 
 # Ruby gems
-COPY --from=builder /var/www/coingecko/vendor/bundle /var/www/coingecko/vendor/bundle
+COPY --from=builder /var/www/app/vendor/bundle /var/www/app/vendor/bundle
 
-COPY --from=builder /var/www/coingecko /var/www/coingecko
+COPY --from=builder /var/www/app /var/www/app
 
 RUN [ -f ./geolite/GeoLite2-City.mmdb ] || wget https://github.com/DocSpring/geolite2-city-mirror/raw/master/GeoLite2-City.tar.gz -O - | tar xz --strip-components=1 -C ./geolite
 

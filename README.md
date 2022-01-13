@@ -13,10 +13,6 @@ Simple Rails 6.1 short link application to demonstrate common Rails design patte
   </tr>
 </table>
 
-A demo site can be found here [https://scary-plague-04902.herokuapp.com/](https://scary-plague-04902.herokuapp.com/).
-
-[[_TOC_]]
-
 ## Features
 
 -   Time series page view reporting with [TimescaleDB](https://www.timescale.com) postgresql extension.
@@ -52,7 +48,7 @@ How to run command inside container:
 ```shell
  docker-compose run --rm web /bin/sh
 
- /var/www/coingecko # rails routes
+ /var/www/app # rails routes
 ```
 
 Running rspec:
@@ -116,5 +112,3 @@ Container is deployed at the very last step of the pipeline after sucessful test
 This container approach allows for more advance deployment to Kubernetes cluster using Helm Charts.
 
 ## Demo
-
-A demo site can be found here [https://scary-plague-04902.herokuapp.com/](https://scary-plague-04902.herokuapp.com/).
